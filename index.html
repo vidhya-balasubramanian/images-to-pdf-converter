@@ -71,11 +71,8 @@
             }
           };
 
-          // const pElem = document.createElement("p");
-          // pElem.innerHTML = files[i].name;
           imgWrapper.appendChild(img);
           imgWrapper.appendChild(deleteImg);
-          // imgWrapper.appendChild(pElem);
           document.getElementById("selectedImages").appendChild(imgWrapper);
           const newImgElem = document.createElement("img");
           newImgElem.src = url;
@@ -110,11 +107,11 @@
             const displayHeight = imgsArray[i].height * ratio;
 
             const marginX =
-              imgsArray[i].width > pageWidth
+              displayWidth >= pageWidth
                 ? 0
                 : (pageWidth - imgsArray[i].width) / 2;
             const marginY =
-              imgsArray[i].height > pageHeight
+              displayHeight >= pageHeight
                 ? 0
                 : (pageHeight - imgsArray[i].height) / 2;
 
