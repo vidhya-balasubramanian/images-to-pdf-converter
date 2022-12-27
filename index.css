@@ -1,0 +1,61 @@
+.page-wrapper {
+  width: 80%;
+  display: block;
+  margin: auto;
+}
+.buttons-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 50px 0;
+}
+input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 1;
+}
+.button {
+  display: flex;
+}
+
+button,
+.upload {
+  width: 220px;
+  text-align: center;
+  padding: 10px 5px;
+  font-size: 16px;
+  outline: none;
+  color: #fff;
+  border: none;
+  background-color: #f06646;
+  border-radius: 5px;
+  position: relative;
+  display: block;
+  font-family: "Arial";
+}
+
+.upload {
+  background: #eb5489;
+  margin-right: 10px;
+}
+
+#selectedImages {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#selectedImages > img {
+  object-fit: contain;
+  width: 200px;
+  height: 200px;
+  border: 1px solid grey;
+}
+
+#selectedImages > div {
+  margin: 10px;
+}
