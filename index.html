@@ -106,22 +106,22 @@
             const displayWidth = Math.round(imgsArray[i].width * ratio);
             const displayHeight = Math.round(imgsArray[i].height * ratio);
 
-            const marginX = Math.abs(
-              displayWidth >= pageWidth
-                ? 0
-                : (pageWidth - imgsArray[i].width) / 2
-            );
-            const marginY = Math.abs(
-              displayHeight >= pageHeight
-                ? 0
-                : (pageHeight - imgsArray[i].height) / 2
-            );
+            // const marginX = Math.abs(
+            //   displayWidth >= pageWidth || displayHeight >= pageHeight
+            //     ? 0
+            //     : (pageWidth - imgsArray[i].width) / 2
+            // );
+            // const marginY = Math.abs(
+            //   displayWidth >= pageWidth || displayHeight >= pageHeight
+            //     ? 0
+            //     : (pageHeight - imgsArray[i].height) / 2
+            // );
 
             doc.addImage(
               imgsArray[i].elem,
               "JPEG",
-              marginX,
-              marginY,
+              0,
+              0,
               displayWidth,
               displayHeight
             );
