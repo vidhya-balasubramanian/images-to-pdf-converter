@@ -46,7 +46,7 @@ button,
   justify-content: center;
 }
 
-#selectedImages > img {
+.selected-img {
   object-fit: contain;
   width: 200px;
   height: 200px;
@@ -55,4 +55,13 @@ button,
 
 #selectedImages > div {
   margin: 10px;
+  position: relative;
+}
+
+.close-icon {
+  position: absolute;
+  top: -17px;
+  right: 1px;
+  width: 10px;
+  height: 10px;
 }

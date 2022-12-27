@@ -38,14 +38,28 @@
         const files = event?.target?.files || [];
         for (let i = 0; i < files?.length; i++) {
           const imgWrapper = document.createElement("div");
+          imgWrapper.id = `img_wrapper_${i}`;
 
           const img = document.createElement("img");
           const url = URL.createObjectURL(files[i]);
           img.src = url;
           img.alt = "";
+          img.classList.add("selected-img");
+
+          const deleteImg = document.createElement("img");
+          deleteImg.src = "./images/delete.png";
+          deleteImg.alt = "";
+          deleteImg.classList.add("close-icon");
+          deleteImg.id = i;
+          deleteImg.onclick = function (event) {
+            const id = `img_wrapper_${event.target.id}`;
+            document.getElementById(id).remove();
+          };
+
           const pElem = document.createElement("p");
           pElem.innerHTML = files[i].name;
           imgWrapper.appendChild(img);
+          imgWrapper.appendChild(deleteImg);
           imgWrapper.appendChild(pElem);
           document.getElementById("selectedImages").appendChild(imgWrapper);
           const newImgElem = document.createElement("img");
