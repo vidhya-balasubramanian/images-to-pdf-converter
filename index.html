@@ -107,11 +107,11 @@
             const displayHeight = imgsArray[i].height * ratio;
 
             const marginX =
-              displayWidth >= pageWidth
+              displayWidth >= pageWidth || displayHeight >= pageHeight
                 ? 0
                 : (pageWidth - imgsArray[i].width) / 2;
             const marginY =
-              displayHeight >= pageHeight
+              displayWidth >= pageWidth || displayHeight >= pageHeight
                 ? 0
                 : (pageHeight - imgsArray[i].height) / 2;
 
