@@ -1,82 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1.0, maximum-scale=1.0, user-scalable=1"
+    />
+    <title>Images to PDF Converter</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="stylesheet" href="index.css" />
+  </head>
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=1" />
-  <title>Images to PDF Converter</title>
-  <link rel="stylesheet" href="index.css">
-  </link>
-
-</head>
-
-<body>
-  <div class="page-wrapper">
-    <div class="buttons-wrapper">
-      <div class="upload">
-        <input type="file" onChange="onUploadFile(event)" name="images" accept=".png, .jpg, .jpeg" multiple id="upload" />
-        <label for="upload">Upload image(s)</label>
+  <body>
+    <div class="page-wrapper">
+      <div class="buttons-wrapper">
+        <div class="upload">
+          <input
+            type="file"
+            onChange="onUploadFile(event)"
+            name="images"
+            accept=".png, .jpg, .jpeg"
+            multiple
+            id="upload"
+          />
+          <label for="upload">Upload image(s)</label>
+        </div>
+        <button onClick="onConvertToPdf()">Download PDF</button>
       </div>
-      <button onClick="onConvertToPdf()">Download PDF</button>
+      <div id="selectedImages"></div>
     </div>
-    <div id="selectedImages">
-    </div>
-  </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
-  <script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
+    <script>
+      let imgsArray = [];
 
-    let imgsArray = [];
+      function onUploadFile(event) {
+        const files = event?.target?.files || [];
+        for (let i = 0; i < files?.length; i++) {
+          const imgWrapper = document.createElement("div");
 
-    function onUploadFile(event) {
-      const files = event?.target?.files || [];
-      for (let i = 0; i < files?.length; i++) {
-        const imgWrapper = document.createElement("div");
-
-        const img = document.createElement("img");
-        const url = URL.createObjectURL(files[i]);
-        img.src = url;
-        img.alt = '';
-        const pElem = document.createElement('p');
-        pElem.innerHTML = files[i].name;
-        imgWrapper.appendChild(img);
-        imgWrapper.appendChild(pElem);
-        document.getElementById('selectedImages').appendChild(imgWrapper);
-        const newImgElem = document.createElement('img');
-        newImgElem.src = url;
-        newImgElem.onload = function () {
-          imgsArray.push({
-            elem: newImgElem,
-            width: newImgElem.width,
-            height: newImgElem.height,
-          });
+          const img = document.createElement("img");
+          const url = URL.createObjectURL(files[i]);
+          img.src = url;
+          img.alt = "";
+          const pElem = document.createElement("p");
+          pElem.innerHTML = files[i].name;
+          imgWrapper.appendChild(img);
+          imgWrapper.appendChild(pElem);
+          document.getElementById("selectedImages").appendChild(imgWrapper);
+          const newImgElem = document.createElement("img");
+          newImgElem.src = url;
+          newImgElem.onload = function () {
+            imgsArray.push({
+              elem: newImgElem,
+              width: newImgElem.width,
+              height: newImgElem.height,
+            });
+          };
         }
-
+        event.target.value = "";
       }
-      event.target.value = ''
-    }
 
-    function onConvertToPdf() {
-      if (imgsArray?.length) {
-        const doc = new jsPDF('p', 'px', 'a4');
-        for (let i = 0; i < imgsArray?.length; i++) {
-          const pageWidth = doc.internal.pageSize.getWidth();
-          const pageHeight = doc.internal.pageSize.getHeight();
-          const marginX = (pageWidth - imgsArray[i].width) / 2;
-          const marginY = (pageHeight - imgsArray[i].height) / 2;
-          doc.addImage(imgsArray[i].elem, 'JPEG', marginX, marginY, imgsArray[i].width, imgsArray[i].height);
-          if (i !== imgsArray.length - 1) {
-            doc.addPage();
+      function onConvertToPdf() {
+        if (imgsArray?.length) {
+          const doc = new jsPDF("p", "px", "a4");
+          for (let i = 0; i < imgsArray?.length; i++) {
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+            const marginX = (pageWidth - imgsArray[i].width) / 2;
+            const marginY = (pageHeight - imgsArray[i].height) / 2;
+            doc.addImage(
+              imgsArray[i].elem,
+              "JPEG",
+              marginX,
+              marginY,
+              imgsArray[i].width,
+              imgsArray[i].height
+            );
+            if (i !== imgsArray.length - 1) {
+              doc.addPage();
+            }
           }
+          imgsArray.length = 0;
+          const elem = document.getElementById("selectedImages");
+          elem.innerHTML = "";
+          doc.save("imgtopdf.pdf");
         }
-        imgsArray.length = 0;
-        const elem = document.getElementById('selectedImages');
-        elem.innerHTML = '';
-        doc.save("imgtopdf.pdf");
       }
-
-    }
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>
