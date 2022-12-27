@@ -97,23 +97,25 @@
         if (imgsArray?.length) {
           const doc = new jsPDF("p", "px", "a4");
           for (let i = 0; i < imgsArray?.length; i++) {
-            const pageWidth = doc.internal.pageSize.getWidth();
-            const pageHeight = doc.internal.pageSize.getHeight();
+            const pageWidth = Math.round(doc.internal.pageSize.getWidth());
+            const pageHeight = Math.round(doc.internal.pageSize.getHeight());
             const widthRatio = pageWidth / imgsArray[i].width;
             const heightRatio = pageHeight / imgsArray[i].height;
             const ratio = widthRatio > heightRatio ? heightRatio : widthRatio;
 
-            const displayWidth = imgsArray[i].width * ratio;
-            const displayHeight = imgsArray[i].height * ratio;
+            const displayWidth = Math.round(imgsArray[i].width * ratio);
+            const displayHeight = Math.round(imgsArray[i].height * ratio);
 
-            const marginX =
-              displayWidth >= pageWidth || displayHeight >= pageHeight
+            const marginX = Math.abs(
+              displayWidth >= pageWidth
                 ? 0
-                : (pageWidth - imgsArray[i].width) / 2;
-            const marginY =
-              displayWidth >= pageWidth || displayHeight >= pageHeight
+                : (pageWidth - imgsArray[i].width) / 2
+            );
+            const marginY = Math.abs(
+              displayHeight >= pageHeight
                 ? 0
-                : (pageHeight - imgsArray[i].height) / 2;
+                : (pageHeight - imgsArray[i].height) / 2
+            );
 
             doc.addImage(
               imgsArray[i].elem,
