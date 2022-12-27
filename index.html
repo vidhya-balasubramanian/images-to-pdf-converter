@@ -26,6 +26,15 @@
           <label for="upload">Upload image(s)</label>
         </div>
         <button onClick="onConvertToPdf()">Download PDF</button>
+        <div onClick="onDeleteImages()" class="clear-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="17">
+            <path
+              d="M12.37 2.017H9.164V1c0-.557-.457-1-1.02-1H5.43c-.56 0-1.018.453-1.018 1v1H1.207A1.2 1.2 0 0 0 0 3.213v1.494h13.576V3.213c0-.66-.542-1.196-1.207-1.196zm-3.884 0H5.1V1c0-.186.152-.336.34-.336h2.715c.187 0 .34.15.34.336v1zM.68 17.413c0 .7.568 1.254 1.266 1.254h9.687c.698 0 1.266-.562 1.266-1.254V6.228H.68v11.185"
+              fill="#fff"
+              fill-rule="evenodd"
+            ></path>
+          </svg>
+        </div>
       </div>
       <div id="selectedImages"></div>
     </div>
@@ -54,13 +63,19 @@
           deleteImg.onclick = function (event) {
             const id = `img_wrapper_${event.target.id}`;
             document.getElementById(id).remove();
+            const elemIndex = imgsArray.findIndex(
+              (data) => data.wrapperId === id
+            );
+            if (elemIndex !== -1) {
+              imgsArray.splice(elemIndex, 1);
+            }
           };
 
-          const pElem = document.createElement("p");
-          pElem.innerHTML = files[i].name;
+          // const pElem = document.createElement("p");
+          // pElem.innerHTML = files[i].name;
           imgWrapper.appendChild(img);
           imgWrapper.appendChild(deleteImg);
-          imgWrapper.appendChild(pElem);
+          // imgWrapper.appendChild(pElem);
           document.getElementById("selectedImages").appendChild(imgWrapper);
           const newImgElem = document.createElement("img");
           newImgElem.src = url;
@@ -69,35 +84,52 @@
               elem: newImgElem,
               width: newImgElem.width,
               height: newImgElem.height,
+              wrapperId: imgWrapper.id,
             });
           };
         }
         event.target.value = "";
       }
 
+      function onDeleteImages() {
+        const elem = document.getElementById("selectedImages");
+        elem.innerHTML = "";
+        imgsArray.length = 0;
+      }
       function onConvertToPdf() {
         if (imgsArray?.length) {
           const doc = new jsPDF("p", "px", "a4");
           for (let i = 0; i < imgsArray?.length; i++) {
             const pageWidth = doc.internal.pageSize.getWidth();
             const pageHeight = doc.internal.pageSize.getHeight();
-            const marginX = (pageWidth - imgsArray[i].width) / 2;
-            const marginY = (pageHeight - imgsArray[i].height) / 2;
+            const widthRatio = pageWidth / imgsArray[i].width;
+            const heightRatio = pageHeight / imgsArray[i].height;
+            const ratio = widthRatio > heightRatio ? heightRatio : widthRatio;
+
+            const displayWidth = imgsArray[i].width * ratio;
+            const displayHeight = imgsArray[i].height * ratio;
+
+            const marginX =
+              imgsArray[i].width > pageWidth
+                ? 0
+                : (pageWidth - imgsArray[i].width) / 2;
+            const marginY =
+              imgsArray[i].height > pageHeight
+                ? 0
+                : (pageHeight - imgsArray[i].height) / 2;
+
             doc.addImage(
               imgsArray[i].elem,
               "JPEG",
               marginX,
               marginY,
-              imgsArray[i].width,
-              imgsArray[i].height
+              displayWidth,
+              displayHeight
             );
             if (i !== imgsArray.length - 1) {
               doc.addPage();
             }
           }
-          imgsArray.length = 0;
-          const elem = document.getElementById("selectedImages");
-          elem.innerHTML = "";
           doc.save("imgtopdf.pdf");
         }
       }

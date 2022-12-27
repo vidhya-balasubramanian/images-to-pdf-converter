@@ -1,5 +1,5 @@
 .page-wrapper {
-  width: 80%;
+  width: 95%;
   display: block;
   margin: auto;
 }
@@ -7,6 +7,8 @@
   display: flex;
   justify-content: center;
   margin: 50px 0;
+  flex-wrap: wrap;
+  align-items: center;
 }
 input {
   position: absolute;
@@ -20,9 +22,8 @@ input {
 
 button,
 .upload {
-  width: 220px;
   text-align: center;
-  padding: 10px 5px;
+  padding: 13px 10px;
   font-size: 16px;
   outline: none;
   color: #fff;
@@ -32,11 +33,16 @@ button,
   position: relative;
   display: block;
   font-family: "Arial";
+  margin: 5px;
 }
-
+.clear-btn {
+  background-color: #e5322d;
+  padding: 6px 10px 5px 10px;
+  border-radius: 50%;
+  margin: 5px;
+}
 .upload {
   background: #eb5489;
-  margin-right: 10px;
 }
 
 #selectedImages {
